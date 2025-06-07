@@ -1,0 +1,70 @@
+/* Logo container styling */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Adds space between logo and text */
+}
+
+/* Logo image styling */
+.logo-icon {
+    width: clamp(32px, 5vw, 50px); /* Responsive sizing - scales from 32px to 50px */
+    height: clamp(32px, 5vw, 50px);
+    object-fit: contain; /* Maintains aspect ratio */
+    border-radius: 8px; /* Rounded corners */
+    transition: transform 0.2s ease; /* Smooth hover effect */
+}
+
+/* Optional hover effect for the logo */
+.logo-icon:hover {
+    transform: scale(1.05); /* Slightly enlarges on hover */
+}
+
+/* Ensure logo text styling remains intact */
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.logo-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Mobile responsiveness for the entire logo section */
+@media (max-width: 768px) {
+    .logo {
+        gap: 8px; /* Smaller gap on mobile */
+    }
+    
+    .logo-title {
+        font-size: 1.2rem; /* Smaller title on mobile */
+    }
+    
+    .logo-subtitle {
+        font-size: 0.8rem; /* Smaller subtitle on mobile */
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .logo {
+        gap: 6px;
+    }
+    
+    .logo-title {
+        font-size: 1rem;
+    }
+    
+    .logo-subtitle {
+        font-size: 0.75rem;
+    }
+}
