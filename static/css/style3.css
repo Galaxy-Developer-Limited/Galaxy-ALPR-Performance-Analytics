@@ -1,0 +1,404 @@
+/* Updated Color Scheme for Accuracy and Speed Metrics */
+
+/* ===========================================
+   ACCURACY COLOR SCHEME (Updated)
+   0-49%: Red
+   50-79%: Yellow  
+   80-100%: Green
+   =========================================== */
+
+/* Accuracy badges in table */
+.accuracy-high { 
+    color: #065f46 !important;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important;
+    border: 1px solid #16a34a !important;
+}
+
+.accuracy-medium { 
+    color: #92400e !important;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+    border: 1px solid #ca8a04 !important;
+}
+
+.accuracy-low { 
+    color: #991b1b !important;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
+    border: 1px solid #dc2626 !important;
+}
+
+/* Statistics cards accuracy values */
+.accuracy-stat-card .stat-value {
+    color: #ffffff !important;
+}
+
+/* Test case accuracy metrics */
+.testcase-metric .metric-value.accuracy {
+    color: #065f46 !important; /* Default green for high accuracy */
+}
+
+/* Dynamic accuracy coloring for test case cards */
+.testcase-card .metric-value.accuracy[data-accuracy-level="high"] {
+    color: #065f46 !important; /* Green for 80-100% */
+    background: rgba(34, 197, 94, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.testcase-card .metric-value.accuracy[data-accuracy-level="medium"] {
+    color: #92400e !important; /* Yellow for 50-79% */
+    background: rgba(245, 158, 11, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.testcase-card .metric-value.accuracy[data-accuracy-level="low"] {
+    color: #991b1b !important; /* Red for 0-49% */
+    background: rgba(239, 68, 68, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* ===========================================
+   SPEED COLOR SCHEME (Updated)
+   1-5s: Green (Fast)
+   6-10s: Yellow (Medium)
+   10s+: Red (Slow)
+   =========================================== */
+
+/* Speed badges in table */
+.speed-fast {
+    color: #065f46 !important;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important;
+    border: 1px solid #16a34a !important;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.speed-medium {
+    color: #92400e !important;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+    border: 1px solid #ca8a04 !important;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.speed-slow {
+    color: #991b1b !important;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
+    border: 1px solid #dc2626 !important;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* Test case speed metrics */
+.testcase-metric .metric-value.speed {
+    color: #065f46 !important; /* Default green for fast speed */
+}
+
+/* Dynamic speed coloring for test case cards */
+.testcase-card .metric-value.speed[data-speed-level="fast"] {
+    color: #065f46 !important; /* Green for 1-5s */
+    background: rgba(34, 197, 94, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.testcase-card .metric-value.speed[data-speed-level="medium"] {
+    color: #92400e !important; /* Yellow for 6-10s */
+    background: rgba(245, 158, 11, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.testcase-card .metric-value.speed[data-speed-level="slow"] {
+    color: #991b1b !important; /* Red for 10s+ */
+    background: rgba(239, 68, 68, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* ===========================================
+   STATISTICS CARD UPDATES
+   =========================================== */
+
+/* Main statistics cards - updated colors */
+.stat-card .stat-value {
+    background: linear-gradient(135deg, #1e293b 0%, #475569 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+/* Accuracy metrics section cards */
+.accuracy-stat-card {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important; /* Green theme */
+}
+
+/* Speed metrics section cards */
+.speed-stat-card {
+    background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%) !important; /* Blue theme */
+}
+
+/* Processing time info in details */
+.processing-time-info {
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+/* Confidence scores with updated colors */
+.confidence-score {
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.confidence-score.high, 
+.confidence-high { 
+    color: #059669 !important; /* Green */
+}
+
+.confidence-score.medium, 
+.confidence-medium { 
+    color: #d97706 !important; /* Orange */
+}
+
+.confidence-score.low, 
+.confidence-low { 
+    color: #dc2626 !important; /* Red */
+}
+
+/* ===========================================
+   FILTER CONTROLS STYLING
+   =========================================== */
+
+.data-filters {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.filter-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-input {
+    flex: 2;
+    padding: 0.75rem 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    background: white;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+}
+
+.filter-select {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-select:hover {
+    border-color: #9ca3af;
+}
+
+/* Optgroup styling for better visual separation */
+.filter-select optgroup {
+    font-weight: 700;
+    font-style: normal;
+    color: #374151;
+    background: #f9fafb;
+    padding: 8px 0;
+}
+
+.filter-select optgroup[label="Special Cases"] {
+    color: #991b1b;
+    background: #fef2f2;
+}
+
+.filter-select option {
+    padding: 8px 12px;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Special case options styling */
+.filter-select optgroup[label="Special Cases"] option {
+    color: #991b1b;
+    font-weight: 600;
+    background: #fef2f2;
+}
+
+.filter-select optgroup[label="Special Cases"] option:hover {
+    background: #fee2e2;
+}
+
+/* Clear filters button */
+#clearFilters {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    white-space: nowrap !important;
+}
+
+#clearFilters:hover {
+    background: linear-gradient(135deg, #4b5563 0%, #374151 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3) !important;
+}
+
+/* ===========================================
+   ENHANCED TABLE STYLING
+   =========================================== */
+
+/* Processing time column with color coding */
+.processing-time-large {
+    font-weight: 600;
+    text-align: center;
+    display: inline-block;
+    min-width: 60px;
+}
+
+/* Accuracy cell improvements */
+.accuracy-large {
+    font-weight: 700 !important;
+    text-align: center;
+    display: inline-block;
+    min-width: 70px;
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Test case tags with improved contrast */
+.tag-large {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 768px) {
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .filter-input, .filter-select {
+        width: 100%;
+        min-width: auto;
+        flex: none;
+    }
+    
+    #clearFilters {
+        width: 100% !important;
+    }
+    
+    .data-filters {
+        padding: 1rem;
+    }
+    
+    .accuracy-breakdown {
+        flex-wrap: wrap;
+    }
+    
+    .tag {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.4rem;
+    }
+    
+    .tag-large {
+        font-size: 11px !important;
+        padding: 5px 10px !important;
+    }
+}
+
+/* ===========================================
+   COMPARISON CONTAINER ENHANCEMENTS
+   =========================================== */
+
+/* Match/mismatch styling with updated colors */
+.comparison-container.match {
+    border: 2px solid #16a34a !important;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+}
+
+.comparison-container.mismatch {
+    border: 2px solid #dc2626 !important;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%) !important;
+}
+
+.comparison-container.match .vs-separator {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+    color: white !important;
+    border-color: #16a34a !important;
+}
+
+.comparison-container.mismatch .vs-separator {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: white !important;
+    border-color: #dc2626 !important;
+}
+
+/* ===========================================
+   NOTIFICATION UPDATES
+   =========================================== */
+
+.notification.success {
+    border-left-color: #16a34a !important;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+    color: #14532d !important;
+}
+
+.notification.error {
+    border-left-color: #dc2626 !important;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%) !important;
+    color: #991b1b !important;
+}
+
+.notification.warning {
+    border-left-color: #ca8a04 !important;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
+    color: #92400e !important;
+}

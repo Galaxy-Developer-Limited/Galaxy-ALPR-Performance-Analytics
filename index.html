@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy ALPR Performance</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/statistics.css">
+    <link rel="stylesheet" href="static/css/style2.css">
+    <link rel="stylesheet" href="static/css/data-styles.css">
+    <link rel="stylesheet" href="static/css/style3.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <img class="modal-image" id="modalImage" src="" alt="">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">G</div>
+                <div class="logo-text">
+                    <div class="logo-title">Galaxy ALPR Performance</div>
+                    <div class="logo-subtitle">Advanced License Plate Recognition Analytics</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">📊</div>
+                </div>
+                <div class="stat-value" id="totalDetections">0</div>
+                <div class="stat-label">Total Detections</div>
+                <div class="stat-sub-info">
+                    <span id="vehicleCount">0</span> vehicles • <span id="plateCount">0</span> plates
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">🎯</div>
+                </div>
+                <div class="stat-value" id="overallAccuracy">0%</div>
+                <div class="stat-label">Overall Accuracy</div>
+                <div class="stat-sub-info">Predicted vs Validated Data</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">⚡</div>
+                </div>
+                <div class="stat-value" id="avgProcessingTime">0.00s</div>
+                <div class="stat-label">Average Processing Time</div>
+                <div class="stat-sub-info">Per Image Processing</div>
+            </div>
+        </div>
+
+        <!-- Tabbed Results Section -->
+        <div class="results-section">
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-button active" id="testResultsTab" data-tab="test-results">
+                        <span class="tab-icon">🔍</span>
+                        Test Results
+                    </button>
+                    <button class="tab-button" id="statisticsTab" data-tab="statistics">
+                        <span class="tab-icon">📊</span>
+                        Performance Statistics
+                    </button>
+                </div>
+
+                <!-- Test Results Tab Content -->
+                <div class="tab-content active" id="test-results">
+                    <div class="tab-content-header">
+                        <h2 class="card-title">Test Results</h2>
+                        <div class="results-summary">
+                            <span id="resultsCount">0 results</span>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="results-table compact-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%"></th>
+                                    <th width="15%">Timestamp</th>
+                                    <th width="25%">Test Cases</th>
+                                    <th width="15%">Images</th>
+                                    <th width="15%">Accuracy</th>
+                                    <th width="10%">Processing Time</th>
+                                    <th width="15%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <tr>
+                                    <td colspan="7" class="empty-state">
+                                        <div class="empty-state-icon">🔍</div>
+                                        <div>No test results yet. Upload an image to start testing.</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Statistics Tab Content -->
+                <div class="tab-content" id="statistics">
+                    <div class="tab-content-header">
+                        <h2 class="card-title">Performance Statistics</h2>
+                        <div class="stats-summary">
+                            <span>Detailed analytics for vehicle detection, plate detection, and OCR performance</span>
+                        </div>
+                    </div>
+                    
+                    <div class="statistics-content">
+                        <!-- Accuracy Metrics Row -->
+                        <div class="accuracy-metrics-section">
+                            <h3 class="section-title">🎯 Accuracy Metrics</h3>
+                            <div class="accuracy-stats-grid">
+                                <div class="accuracy-stat-card">
+                                    <div class="stat-header">
+                                        <div class="stat-icon">🚗</div>
+                                        <div class="stat-category">Vehicle Detection</div>
+                                    </div>
+                                    <div class="stat-value" id="vehicleDetectionAccuracy">-</div>
+                                    <div class="stat-label" style="color: white !important;">Detection Accuracy</div>
+                                    <div class="stat-sub-info" style="color: white !important;">
+                                        <span id="vehicleDetectionCount">-</span> vehicles detected
+                                    </div>
+                                    <div class="stat-trend" id="vehicleDetectionTrend" style="color: white !important;">
+                                        <span class="trend-arrow">-</span>
+                                        <span class="trend-value">-</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="accuracy-stat-card">
+                                    <div class="stat-header">
+                                        <div class="stat-icon">🏷️</div>
+                                        <div class="stat-category">Plate Detection</div>
+                                    </div>
+                                    <div class="stat-value" id="plateDetectionAccuracy">-</div>
+                                    <div class="stat-label" style="color: white !important;">Detection Accuracy</div>
+                                    <div class="stat-sub-info" style="color: white !important;">
+                                        <span id="plateDetectionCount">-</span> plates detected
+                                    </div>
+                                    <div class="stat-trend" id="plateDetectionTrend" style="color: white !important;">
+                                        <span class="trend-arrow">-</span>
+                                        <span class="trend-value">-</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="accuracy-stat-card">
+                                    <div class="stat-header">
+                                        <div class="stat-icon">🔤</div>
+                                        <div class="stat-category">Plate OCR</div>
+                                    </div>
+                                    <div class="stat-value" id="plateOcrAccuracy">-</div>
+                                    <div class="stat-label" style="color: white !important;">OCR Accuracy</div>
+                                    <div class="stat-sub-info" style="color: white !important;">
+                                        <span id="plateOcrCount">-</span> plates read
+                                    </div>
+                                    <div class="stat-trend" id="plateOcrTrend" style="color: white !important;">
+                                        <span class="trend-arrow">-</span>
+                                        <span class="trend-value">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Speed Metrics Row -->
+                        <div class="speed-metrics-section">
+                            <h3 class="section-title">⚡ Processing Speed</h3>
+                            <div class="speed-stats-grid">
+                                <div class="speed-stat-card">
+                                    <div class="stat-header">
+                                        <div class="stat-icon">🚗</div>
+                                        <div class="stat-category">Vehicle Detection</div>
+                                    </div>
+                                    <div class="stat-value" id="vehicleDetectionSpeed">-</div>
+                                    <div class="stat-label" style="color: white !important;">Average Speed</div>
+                                    <div class="stat-sub-info" style="color: white !important;">
+                                        Per vehicle detection
+                                    </div>
+                                </div>
+                                
+                                <div class="speed-stat-card">
+                                    <div class="stat-header">
+                                        <div class="stat-icon">🏷️</div>
+                                        <div class="stat-category">Plate Detection</div>
+                                    </div>
+                                    <div class="stat-value" id="plateDetectionSpeed">-</div>
+                                    <div class="stat-label" style="color: white !important;">Average Speed</div>
+                                    <div class="stat-sub-info" style="color: white !important;">
+                                        Per plate detection
+                                    </div>
+                                </div>
+                                
+                                <div class="speed-stat-card">
+                                    <div class="stat-header">
+                                        <div class="stat-icon">🔤</div>
+                                        <div class="stat-category">Plate OCR</div>
+                                    </div>
+                                    <div class="stat-value" id="plateOcrSpeed">-</div>
+                                    <div class="stat-label" style="color: white !important;">Average Speed</div>
+                                    <div class="stat-sub-info" style="color: white !important;">
+                                        Per OCR process
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance by Test Case Section -->
+                        <div class="testcase-performance-section">
+                            <h3 class="section-title">🎯 Performance by Test Case</h3>
+                            
+                            <!-- Image Quality Performance -->
+                            <div class="testcase-category">
+                                <h4 class="testcase-category-title">📷 Image Quality</h4>
+                                <div class="testcase-grid">
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Good</span>
+                                            <span class="testcase-count" id="qualityGoodCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="qualityGoodAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="qualityGoodSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Average</span>
+                                            <span class="testcase-count" id="qualityAverageCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="qualityAverageAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="qualityAverageSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Poor</span>
+                                            <span class="testcase-count" id="qualityPoorCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="qualityPoorAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="qualityPoorSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Image Lighting Performance -->
+                            <div class="testcase-category">
+                                <h4 class="testcase-category-title">💡 Image Lighting</h4>
+                                <div class="testcase-grid">
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Day</span>
+                                            <span class="testcase-count" id="lightingDayCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="lightingDayAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="lightingDaySpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Lit</span>
+                                            <span class="testcase-count" id="lightingLitCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="lightingLitAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="lightingLitSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Night</span>
+                                            <span class="testcase-count" id="lightingNightCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="lightingNightAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="lightingNightSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Image Resolution Performance -->
+                            <div class="testcase-category">
+                                <h4 class="testcase-category-title">📐 Image Resolution</h4>
+                                <div class="testcase-grid">
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">High</span>
+                                            <span class="testcase-count" id="resolutionHighCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="resolutionHighAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="resolutionHighSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Medium</span>
+                                            <span class="testcase-count" id="resolutionMediumCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="resolutionMediumAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="resolutionMediumSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Low</span>
+                                            <span class="testcase-count" id="resolutionLowCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="resolutionLowAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="resolutionLowSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Object Count Performance -->
+                            <div class="testcase-category">
+                                <h4 class="testcase-category-title">👥 Object Count</h4>
+                                <div class="testcase-grid">
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Single</span>
+                                            <span class="testcase-count" id="countSingleCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="countSingleAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="countSingleSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Multiple</span>
+                                            <span class="testcase-count" id="countMultipleCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="countMultipleAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="countMultipleSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Crowded</span>
+                                            <span class="testcase-count" id="countCrowdedCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="countCrowdedAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="countCrowdedSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vehicle Distance Performance -->
+                            <div class="testcase-category">
+                                <h4 class="testcase-category-title">📏 Vehicle Distance</h4>
+                                <div class="testcase-grid">
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Near</span>
+                                            <span class="testcase-count" id="distanceNearCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="distanceNearAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="distanceNearSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Medium</span>
+                                            <span class="testcase-count" id="distanceMediumCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="distanceMediumAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="distanceMediumSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Far</span>
+                                            <span class="testcase-count" id="distanceFarCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="distanceFarAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="distanceFarSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Camera Angle Performance -->
+                            <div class="testcase-category">
+                                <h4 class="testcase-category-title">📹 Camera Angle</h4>
+                                <div class="testcase-grid">
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Front</span>
+                                            <span class="testcase-count" id="angleFrontCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="angleFrontAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="angleFrontSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Side</span>
+                                            <span class="testcase-count" id="angleSideCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="angleSideAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="angleSideSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="testcase-card">
+                                        <div class="testcase-header">
+                                            <span class="testcase-name">Top-Down</span>
+                                            <span class="testcase-count" id="angleTopdownCount">- tests</span>
+                                        </div>
+                                        <div class="testcase-metrics">
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Accuracy</span>
+                                                <span class="metric-value accuracy" id="angleTopdownAccuracy">-%</span>
+                                            </div>
+                                            <div class="testcase-metric">
+                                                <span class="metric-label">Speed</span>
+                                                <span class="metric-value speed" id="angleTopdownSpeed">-s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/data-loader.js"></script>
+    <script src="static/js/statistics-calculator.js"></script>
+    <script src="static/js/table-renderer.js"></script>
+    <script src="static/js/script.js"></script>
+</body>
+</html>
