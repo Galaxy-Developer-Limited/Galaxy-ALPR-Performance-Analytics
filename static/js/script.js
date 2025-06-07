@@ -272,19 +272,19 @@ if (!window.GalaxyALPRInitialized) {
                     accuracy: Math.round(vehicleDetectionAccuracy) + '%',
                     count: this.data.length,
                     speed: avgVehicleSpeed.toFixed(3) + 's',
-                    trend: { arrow: '↗', value: '+2.3%' }
+                    // trend: { arrow: '↗', value: '+2.3%' }
                 },
                 plateDetection: {
                     accuracy: Math.round(plateDetectionAccuracy) + '%',
-                    count: this.data.length,
+                    count: this.data.filter(item => item.predictions.plateNumber && item.predictions.plateNumber.trim() !== '').length, // Correct
                     speed: avgPlateDetectionSpeed.toFixed(3) + 's',
-                    trend: { arrow: '↗', value: '+1.8%' }
+                    // trend: { arrow: '↗', value: '+1.8%' }
                 },
                 plateOCR: {
                     accuracy: Math.round(plateOcrAccuracy) + '%', // Using overall char matching accuracy
                     count: this.data.filter(item => item.predictions.plateNumber && item.predictions.plateNumber.trim()).length,
                     speed: avgPlateOcrSpeed.toFixed(3) + 's',
-                    trend: { arrow: '↘', value: '-0.5%' }
+                    // trend: { arrow: '↘', value: '-0.5%' }
                 }
             };
         }
